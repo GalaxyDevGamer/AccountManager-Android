@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_account.view.*
 
 class ResultAdapter(private val listener: WordSelectedListener) : RecyclerView.Adapter<ResultAdapter.ViewHolder>() {
 
-    private var results: RealmResults<Accounts> = Realm.getDefaultInstance().where(Accounts::class.java).equalTo("word", "").findAll()
+    private var results: RealmResults<Accounts> = Realm.getDefaultInstance().where(Accounts::class.java).equalTo("account", "").findAll()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_account, parent, false)
