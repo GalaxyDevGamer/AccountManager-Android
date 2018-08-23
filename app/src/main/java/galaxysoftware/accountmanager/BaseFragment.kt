@@ -47,11 +47,14 @@ abstract class BaseFragment : Fragment() {
 
     fun getMainActivity(): MainActivity = ContextData.getInstance().mainActivity!!
 
-    abstract fun getLayoutId():Int
+    abstract fun getLayoutId(): Int
 
     abstract fun initialize()
 
     abstract fun updateFragment()
 
-    fun updateToolbar(navigationType: NavigationType, title: String, menu: Int) = getMainActivity().setData(navigationType, title, menu)
+    /**
+     * Used for setting the data on Toolbar
+     */
+    fun updateToolbar(fragmentType: FragmentType, navigationType: NavigationType, title: String, menu: Int) = getMainActivity().setData(fragmentType, navigationType, title, menu)
 }

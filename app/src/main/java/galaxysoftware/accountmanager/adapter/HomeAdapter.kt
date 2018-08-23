@@ -20,23 +20,8 @@ class HomeAdapter(private val listener: WordSelectedListener, private val callba
     private var data: RealmResults<Accounts> = Realm.getDefaultInstance().where(Accounts::class.java).findAll()
 
     init {
-        if (data.count() == 0) {
-            FirebaseFirestore.getInstance().collection("accounts").get().addOnCompleteListener {
-                if (it.isSuccessful) {
-                    for (document: DocumentSnapshot in it.result) {
-                        val local = Accounts()
-                        local.account = document.data!!["account"].toString()
-                        local.id = document.data!!["id"].toString()
-                        local.password = document.data!!["password"].toString()
-                        local.url = document.data!!["url"].toString()
-                        local.note = document.data!!["note"].toString()
-                        Realm.getDefaultInstance().executeTransaction {
-                            it.insertOrUpdate(local)
-                        }
-                    }
-                }
-                notifyDataSetChanged()
-            }
+        if (data.size == 0) {
+            update()
         }
     }
 
@@ -54,7 +39,7 @@ class HomeAdapter(private val listener: WordSelectedListener, private val callba
     }
 
     fun update() {
-        FirebaseFirestore.getInstance().collection("account").get().addOnCompleteListener {
+        FirebaseFirestore.getInstance().collection("accounts").get().addOnCompleteListener {
             if (it.isSuccessful) {
                 for (document in it.result) {
                     val local = Accounts()
@@ -67,13 +52,14 @@ class HomeAdapter(private val listener: WordSelectedListener, private val callba
                         it.insertOrUpdate(local)
                     }
                 }
+                data = Realm.getDefaultInstance().where(Accounts::class.java).findAll()
                 notifyDataSetChanged()
             }
             callback.onRefreshComplete()
         }
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount() = data.size
 
     inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
         val accountView: TextView = mView.accountView

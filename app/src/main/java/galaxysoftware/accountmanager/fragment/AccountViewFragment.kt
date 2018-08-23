@@ -26,7 +26,6 @@ class AccountViewFragment : BaseFragment() {
         passwordField.text = data?.password
         urlField.text = data?.url
         noteFiled.text = data?.note
-        setHasOptionsMenu(true)
     }
 
     override fun getLayoutId() = R.layout.fragment_accountview
@@ -35,19 +34,17 @@ class AccountViewFragment : BaseFragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        updateToolbar(NavigationType.BACK, arg!!, R.menu.view)
-    }
     private var arg: String? = null
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        updateToolbar(FragmentType.EDIT, NavigationType.BACK, "", R.menu.editer)
         requestChangeFragment(FragmentType.EDIT, accountField.text)
         return super.onOptionsItemSelected(item)
     }
 
     companion object {
         var BUNDLE_KEY_OBJECT = "bundle_key_object"
+
         @JvmStatic
         fun newInstance(any: Any) =
                 AccountViewFragment().apply {
